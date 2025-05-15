@@ -1,0 +1,17 @@
+/* src/app/shared/components/footer/footer.component.css */
+footer {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.hover\:text-accent:hover {
+  color: var(--accent-color);
+}
+
+.border-gray-800 {
+  border-color: rgba(31, 41, 55, 0.5);
+}

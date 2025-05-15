@@ -1,0 +1,65 @@
+<!-- src/app/shared/components/location-card/location-card.component.html -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+  <!-- Image with Rating Badge -->
+  <div class="relative h-48">
+    <img
+      [src]="location.imageUrl || 'assets/images/default-restaurant.jpg'"
+      [alt]="location.name"
+      class="w-full h-full object-cover"
+    >
+    <div *ngIf="location.rating" class="absolute top-2 right-2 bg-white rounded-full px-2 py-1 flex items-center shadow">
+      <span class="text-yellow-500">★</span>
+      <span class="ml-1 text-sm font-medium">{{ location.rating | number:'1.1-1' }}</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-4 flex-grow flex flex-col">
+    <div class="flex-grow">
+      <h3 class="text-lg font-semibold text-dark mb-1">{{ location.name }}</h3>
+
+      <div class="flex items-center text-gray-600 text-sm mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>{{ location.area }}</span>
+      </div>
+
+      <div *ngIf="showDistance && location.distance" class="text-sm text-gray-500 mb-2">
+        {{ location.distance | number:'1.1-1' }} km away
+      </div>
+
+      <div *ngIf="location.cuisineType" class="mb-3">
+        <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
+          {{ location.cuisineType }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Price and Status -->
+    <div class="flex justify-between items-center mt-auto">
+      <div class="text-sm font-medium">
+        <span *ngIf="location.priceRange">
+          {{ '$'.repeat(location.priceRange) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div *ngIf="showActions" class="border-t border-gray-100 px-4 py-3 flex justify-between">
+    <a
+      [routerLink]="['/locations', location.id]"
+      class="text-primary hover:text-primary-dark font-medium text-sm"
+    >
+      View Details
+    </a>
+    <button
+      class="text-accent hover:text-accent-dark font-medium text-sm"
+      (click)="$event.stopPropagation()"
+    >
+      Save
+    </button>
+  </div>
+</div>

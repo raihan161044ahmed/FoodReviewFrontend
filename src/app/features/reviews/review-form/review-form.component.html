@@ -1,0 +1,64 @@
+<!-- src/app/features/reviews/review-form/review-form.component.html -->
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">
+    {{ review ? 'Edit Review' : 'Add Review' }}
+    <span *ngIf="location">for {{ location.name }}</span>
+  </h2>
+
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Rating</label>
+      <div class="flex items-center mt-1">
+        <button
+          *ngFor="let star of [1,2,3,4,5]"
+          type="button"
+          (click)="reviewForm.patchValue({ rating: star })"
+          class="text-2xl focus:outline-none"
+          [class.text-yellow-400]="star <= reviewForm.value.rating!"
+          [class.text-gray-300]="star > reviewForm.value.rating!"
+        >
+          ★
+        </button>
+        <span class="ml-2 text-sm text-gray-500">
+          {{ reviewForm.value.rating }} star{{ reviewForm.value.rating !== 1 ? 's' : '' }}
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Comment (Optional)</label>
+      <textarea
+        formControlName="comment"
+        rows="4"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        placeholder="Share your experience..."></textarea>
+      <div *ngIf="reviewForm.get('comment')?.invalid &&
+                 (reviewForm.get('comment')?.dirty || reviewForm.get('comment')?.touched)"
+           class="text-red-500 text-sm mt-1">
+        Comment must be less than 500 characters
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3">
+      <button
+        type="button"
+        (click)="navigateBack()"
+        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="reviewForm.invalid || isSubmitting"
+        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark disabled:opacity-50"
+      >
+        <span *ngIf="!isSubmitting">{{ review ? 'Update' : 'Submit' }} Review</span>
+        <span *ngIf="isSubmitting">Processing...</span>
+      </button>
+    </div>
+  </form>
+</div>

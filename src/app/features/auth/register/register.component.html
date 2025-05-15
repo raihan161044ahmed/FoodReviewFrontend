@@ -1,0 +1,54 @@
+<!-- src/app/features/auth/register/register.component.html -->
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div *ngIf="errorMessage" class="p-3 bg-red-100 text-red-700 rounded">
+      {{ errorMessage }}
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input id="email" type="email" formControlName="email"
+             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-red-500 text-sm mt-1">
+        <div *ngIf="email?.errors?.['required']">Email is required</div>
+        <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+      </div>
+    </div>
+
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <input id="password" type="password" formControlName="password"
+             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-red-500 text-sm mt-1">
+        <div *ngIf="password?.errors?.['required']">Password is required</div>
+        <div *ngIf="password?.errors?.['minlength']">
+          Password must be at least 6 characters
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword"
+             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      <div *ngIf="registerForm.errors?.['passwordMismatch'] &&
+                 (confirmPassword?.dirty || confirmPassword?.touched)"
+           class="text-red-500 text-sm mt-1">
+        Passwords do not match
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid || isSubmitting"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+      <span *ngIf="!isSubmitting">Register</span>
+      <span *ngIf="isSubmitting">Processing...</span>
+    </button>
+  </form>
+
+  <div class="mt-4 text-center text-sm">
+    Already have an account?
+    <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
+  </div>
+</div>

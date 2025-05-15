@@ -1,0 +1,86 @@
+<!-- src/app/features/admin/location-management/location-management.component.html -->
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">Location Management</h1>
+
+  <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isEditing" class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h2 class="text-xl font-semibold mb-4">
+      {{ currentLocation.id ? 'Edit Location' : 'Add New Location' }}
+    </h2>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Name</label>
+        <input type="text" [(ngModel)]="currentLocation.name"
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Area</label>
+        <input type="text" [(ngModel)]="currentLocation.area"
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Latitude</label>
+          <input type="number" [(ngModel)]="currentLocation.latitude"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Longitude</label>
+          <input type="number" [(ngModel)]="currentLocation.longitude"
+                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4">
+        <button (click)="cancelEdit()" class="btn-secondary">
+          Cancel
+        </button>
+        <button (click)="saveLocation()" class="btn-primary">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">All Locations</h2>
+    <button (click)="createNew()" class="btn-primary" *ngIf="authService.hasRole('Administrator')">
+      Add New Location
+    </button>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Area</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coordinates</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" *ngIf="authService.hasRole('Administrator')">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let location of locations">
+          <td class="px-6 py-4 whitespace-nowrap">{{ location.name }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ location.area }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span *ngIf="location.latitude && location.longitude">
+              {{ location.latitude | number:'1.4-4' }}, {{ location.longitude | number:'1.4-4' }}
+            </span>
+            <span *ngIf="!location.latitude || !location.longitude">-</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" *ngIf="authService.hasRole('Administrator')">
+            <button (click)="editLocation(location)" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+            <button (click)="deleteLocation(location.id)" class="text-red-600 hover:text-red-900">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<header class="bg-dark text-light shadow-md">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a routerLink="/" class="text-2xl font-bold text-accent">RestoDiscover</a>
+
+    <div class="hidden md:flex items-center space-x-6">
+      <a routerLink="/locations" class="hover:text-accent transition-colors">Restaurants</a>
+      <a routerLink="/check-ins" class="hover:text-accent transition-colors">Check-ins</a>
+      <a routerLink="/reviews" class="hover:text-accent transition-colors">Reviews</a>
+
+      <div *ngIf="authService.isAuthenticated()" class="flex items-center space-x-4">
+        <button (click)="navigateToProfile()" class="flex items-center space-x-2 hover:text-accent transition-colors">
+          <span>{{ authService.currentUserValue?.email || 'Profile' }}</span>
+          <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-dark font-bold">
+            {{ authService.currentUserValue?.email?.charAt(0) || 'U' }}
+          </div>
+        </button>
+        <button (click)="logout()" class="hover:text-accent transition-colors">Logout</button>
+      </div>
+
+      <div *ngIf="!authService.isAuthenticated()" class="flex items-center space-x-4">
+        <a routerLink="/login" class="hover:text-accent transition-colors">Login</a>
+        <a routerLink="/register" class="btn-primary">Sign Up</a>
+      </div>
+    </div>
+
+    <button class="md:hidden text-light" (click)="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div *ngIf="isMenuOpen" class="md:hidden bg-dark px-4 py-2">
+    <div class="flex flex-col space-y-3">
+      <a routerLink="/locations" class="hover:text-accent transition-colors">Restaurants</a>
+      <a routerLink="/check-ins" class="hover:text-accent transition-colors">Check-ins</a>
+      <a routerLink="/reviews" class="hover:text-accent transition-colors">Reviews</a>
+
+      <div *ngIf="authService.isAuthenticated()" class="flex flex-col space-y-3 pt-2 border-t border-gray-700">
+        <button (click)="navigateToProfile()" class="text-left hover:text-accent transition-colors">Profile</button>
+        <button (click)="logout()" class="text-left hover:text-accent transition-colors">Logout</button>
+      </div>
+
+      <div *ngIf="!authService.isAuthenticated()" class="flex flex-col space-y-3 pt-2 border-t border-gray-700">
+        <a routerLink="/login" class="hover:text-accent transition-colors">Login</a>
+        <a routerLink="/register" class="btn-primary text-center">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,49 @@
+<!-- src/app/features/reviews/review-list/review-list.component.html -->
+<div class="space-y-6">
+  <div *ngIf="isLoading" class="flex justify-center items-center h-32">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && reviews.length === 0" class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
+    No reviews yet. Be the first to review!
+  </div>
+
+  <div *ngFor="let review of reviews" class="bg-white p-6 rounded-lg shadow">
+    <div class="flex justify-between items-start">
+      <div>
+        <div class="flex items-center mb-1">
+          <div class="flex text-yellow-400">
+            <span *ngFor="let star of [1,2,3,4,5]">
+              {{ star <= review.rating ? '★' : '☆' }}
+            </span>
+          </div>
+          <span class="ml-2 text-sm text-gray-500">
+            {{ review.createdAt | date:'mediumDate' }}
+          </span>
+        </div>
+        <h4 class="font-medium">{{ review.userName || 'Anonymous' }}</h4>
+      </div>
+
+      <div *ngIf="currentUserId === review.userId" class="flex space-x-2">
+        <a
+          [routerLink]="['/locations', locationId, 'reviews', review.id, 'edit']"
+          class="text-sm text-blue-600 hover:underline"
+        >
+          Edit
+        </a>
+        <button
+          (click)="deleteReview(review.id)"
+          class="text-sm text-red-600 hover:underline"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <p *ngIf="review.comment" class="mt-2 text-gray-700">{{ review.comment }}</p>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+/* src/app/features/user/profile/profile.component.css */
+:host {
+  display: block;
+  min-height: calc(100vh - 64px); /* Adjust based on your header height */
+}
+
+.avatar-upload {
+  transition: all 0.3s ease;
+}
+
+.avatar-upload:hover {
+  transform: scale(1.05);
+  opacity: 0.8;
+}

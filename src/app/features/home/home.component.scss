@@ -1,0 +1,18 @@
+/* src/app/features/home/home.component.css */
+.hero-section {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.search-input {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-button {
+  transition: background-color 0.3s ease;
+}
+
+.cta-section {
+  background-color: var(--primary-color);
+}
