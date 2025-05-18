@@ -5,6 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Location } from '../models/location';
 import { AuthService } from '../authentication/auth.service';
 import { Router } from '@angular/router';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class LocationService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private apiUrl = 'api/location';
+  private env= environment
+  private apiUrl = this.env +'/location';
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {

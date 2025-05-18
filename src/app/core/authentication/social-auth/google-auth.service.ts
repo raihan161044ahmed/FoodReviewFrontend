@@ -27,7 +27,7 @@ export class GoogleAuthService {
   }
 
   private handleGoogleLogin(idToken: string): void {
-    this.http.post<User>('/api/auth/google', { token: idToken }).subscribe({
+    this.http.post<User>('/auth/google', { token: idToken }).subscribe({
       next: (user) => {
         this.authService['currentUserSubject'].next(user);
         localStorage.setItem('currentUser', JSON.stringify(user));

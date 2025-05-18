@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { RegisterUserRequest, User, LoginRequest, AuthResponse } from '../models/user.model';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthService {
   private router = inject(Router);
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
-  private apiUrl = 'api/user/profile'; // Add your API base URL here
+  private env = environment
+  private apiUrl = this.env+'/user';
 
   constructor() {
     this.initializeUser();
@@ -32,7 +34,7 @@ export class AuthService {
   }
 
   register(userData: RegisterUserRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>('api/user/register', userData).pipe(
+    return this.http.post<AuthResponse>(this.apiUrl +'/register', userData).pipe(
       tap(response => {
         if (response.message) {
           this.router.navigate(['/login']);
@@ -42,7 +44,7 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>('api/user/login', credentials).pipe(
+    return this.http.post<AuthResponse>(this.apiUrl+'/login', credentials).pipe(
       tap(response => {
         const user = {
           id: response.id,
@@ -57,16 +59,16 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>('api/user/logout', {}).pipe(
+    return this.http.post<void>(this.apiUrl+'/logout', {}).pipe(
       tap(() => {
         this.clearUser();
-        this.router.navigate(['/login']);
+        this.router.navigate([this.apiUrl+'/login']);
       })
     );
   }
 
   getProfile(): Observable<User> {
-    return this.http.get<User>('api/user/profile');
+    return this.http.get<User>(this.apiUrl+'/profile');
   }
 
   private clearUser(): void {

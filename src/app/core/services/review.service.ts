@@ -5,6 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Review } from '../models/review.model';
 import { AuthService } from '../authentication/auth.service';
 import { Router } from '@angular/router';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class ReviewService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private apiUrl = 'api/review';
+  private env= environment
+  private apiUrl = this.env + '/review';
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
@@ -40,7 +42,7 @@ export class ReviewService {
   }
 
   getReviewsByLocationId(locationId: number): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/location/${locationId}`).pipe(
+    return this.http.get<Review[]>(`${this.env}/location/${locationId}`).pipe(
       catchError(this.handleError.bind(this))
     );
   }
